@@ -1,10 +1,12 @@
-package eu.f3rog.stockticker.ui;
+package eu.f3rog.stockticker.ui.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import blade.Blade;
+import blade.I;
 import butterknife.Bind;
+import butterknife.OnClick;
 import eu.f3rog.stockticker.R;
 import eu.f3rog.stockticker.view.ISymbolSelectionView;
 
@@ -28,5 +30,10 @@ public class MainActivity
         super.onCreate(savedInstanceState);
 
         mSymbolSelectionView.setTag("symbols");
+    }
+
+    @OnClick(R.id.btn_show)
+    public void showStocks() {
+        I.startStocksActivity(this);
     }
 }

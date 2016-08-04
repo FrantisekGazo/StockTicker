@@ -10,12 +10,6 @@
 
     <include layout="@layout/part_toolbar"/>
 
-    <include layout="@layout/view_symbols_selection"/>
-
-    <Button
-        android:id="@+id/btn_show"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/action_show"/>
+    <include layout="@layout/view_stocks"/>
 
 </LinearLayout>
