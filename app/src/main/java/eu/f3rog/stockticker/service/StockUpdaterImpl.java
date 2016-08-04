@@ -25,7 +25,7 @@ public final class StockUpdaterImpl
         implements StockUpdater {
 
     private static final String TAG = StockUpdaterImpl.class.getCanonicalName();
-    private static final long INTERVAL = 3;
+    private static final long INTERVAL = 10;
 
     private final DataService mDataService;
     private final ApiService mApi;
@@ -59,7 +59,7 @@ public final class StockUpdaterImpl
                     }
                 });
 
-        Observable.timer(INTERVAL, TimeUnit.SECONDS)
+        Observable.interval(INTERVAL, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .filter(new Func1<Long, Boolean>() {
                     @Override

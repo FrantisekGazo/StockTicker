@@ -18,7 +18,7 @@ import rx.android.schedulers.AndroidSchedulers;
 /**
  * Created by f3rog on 8/4/16.
  */
-public class StockPresenter
+public final class StockPresenter
         extends BasePresenter<IStocksView, String> {
 
     @Inject

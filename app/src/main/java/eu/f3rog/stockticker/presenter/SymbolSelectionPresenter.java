@@ -19,7 +19,7 @@ import eu.f3rog.stockticker.view.ISymbolSelectionView;
  * @author FrantisekGazo
  * @version 2016-08-04
  */
-public class SymbolSelectionPresenter
+public final class SymbolSelectionPresenter
         extends BasePresenter<ISymbolSelectionView, String> {
 
     @Inject

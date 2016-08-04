@@ -13,7 +13,8 @@ import eu.f3rog.stockticker.model.Symbol;
  * @author FrantisekGazo
  * @version 2016-08-04
  */
-public final class DataServiceMock implements DataService {
+public final class DataServiceMock
+        implements DataService {
 
     private List<Symbol> mSymbols = new ArrayList<>();
 
