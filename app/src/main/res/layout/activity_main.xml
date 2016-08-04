@@ -5,11 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="eu.f3rog.stockticker.MainActivity">
+    android:orientation="vertical"
+    tools:context="eu.f3rog.stockticker.ui.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"/>
+    <include layout="@layout/part_toolbar"/>
+
+    <include layout="@layout/view_symbols_selection"/>
 
 </LinearLayout>
