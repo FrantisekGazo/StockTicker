@@ -6,7 +6,7 @@ package eu.f3rog.stockticker.model;
  * @author FrantisekGazo
  * @version 2016-08-04
  */
-public class Symbol {
+public final class Symbol {
 
     private final String mName;
 

@@ -4,6 +4,7 @@ import dagger.Component;
 import eu.f3rog.stockticker.di.AppScope;
 import eu.f3rog.stockticker.di.module.AppModule;
 import eu.f3rog.stockticker.di.module.DataModule;
+import eu.f3rog.stockticker.presenter.StockPresenter;
 import eu.f3rog.stockticker.presenter.SymbolSelectionPresenter;
 
 @AppScope
@@ -18,5 +19,7 @@ public abstract class AppComponent {
     // presenters
 
     public abstract void inject(SymbolSelectionPresenter presenter);
+
+    public abstract void inject(StockPresenter presenter);
 }
 
