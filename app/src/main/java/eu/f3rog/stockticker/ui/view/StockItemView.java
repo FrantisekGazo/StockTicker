@@ -15,7 +15,6 @@ import eu.f3rog.stockticker.model.Stock;
 /**
  * Created by f3rog on 8/4/16.
  */
-
 public class StockItemView
         extends LinearLayout {
 
@@ -54,7 +53,7 @@ public class StockItemView
         if (tag instanceof Stock) {
             Stock stock = (Stock) tag;
 
-            mName.setText(stock.getSymbol().getName());
+            mName.setText(stock.getSymbol());
             mPrice.setText(stock.getFormattedPrice());
         }
     }

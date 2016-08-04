@@ -9,20 +9,20 @@ import android.support.annotation.Nullable;
 public final class Stock {
 
     @NonNull
-    private final Symbol mSymbol;
+    private final String mSymbol;
     @Nullable
-    private final Double mPrice;
+    private final String mPrice;
 
-    public Stock(@NonNull Symbol symbol, @Nullable Double price) {
+    public Stock(@NonNull String symbol, @Nullable String price) {
         mSymbol = symbol;
         mPrice = price;
     }
 
-    public Symbol getSymbol() {
+    public String getSymbol() {
         return mSymbol;
     }
 
-    public Double getPrice() {
+    public String getPrice() {
         return mPrice;
     }
 
@@ -33,19 +33,19 @@ public final class Stock {
 
         Stock stock = (Stock) o;
 
-        if (mSymbol != null ? !mSymbol.equals(stock.mSymbol) : stock.mSymbol != null) return false;
+        if (!mSymbol.equals(stock.mSymbol)) return false;
         return mPrice != null ? mPrice.equals(stock.mPrice) : stock.mPrice == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = mSymbol != null ? mSymbol.hashCode() : 0;
+        int result = mSymbol.hashCode();
         result = 31 * result + (mPrice != null ? mPrice.hashCode() : 0);
         return result;
     }
 
     public String getFormattedPrice() {
-        return (mPrice != null) ? String.format("%.2f", mPrice) : "N/A";
+        return (mPrice == null || mPrice.isEmpty()) ? "N/A" : mPrice;
     }
 }
