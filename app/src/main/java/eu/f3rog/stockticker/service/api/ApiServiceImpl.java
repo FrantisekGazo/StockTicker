@@ -4,8 +4,9 @@ import android.support.annotation.NonNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import eu.f3rog.stockticker.model.Stock;
 import eu.f3rog.stockticker.model.Symbol;
@@ -41,20 +42,27 @@ public final class ApiServiceImpl
         }
 
         Call<List<JsonStock>> call = mYahooFinanceApi.getStocks(TOKEN, sb.toString());
-
+        Map<String, String> stocks = new HashMap<>();
         try {
             Response<List<JsonStock>> response = call.execute();
             List<JsonStock> jsonStocks = response.body();
-            List<Stock> stocks = new ArrayList<>();
+
             if (jsonStocks != null) {
                 for (JsonStock json : jsonStocks) {
-                    stocks.add(new Stock(json.symbol, json.ask));
+                    stocks.put(json.symbol, json.ask);
                 }
             }
-            return stocks;
         } catch (IOException e) {
             e.printStackTrace();
-            return Collections.emptyList();
         }
+
+        List<Stock> result = new ArrayList<>();
+        for (int i = 0; i < symbols.size(); i++) {
+            String symbolName = symbols.get(i).getName();
+            String price = stocks.get(symbolName);
+            Stock stock = new Stock(symbolName, price);
+            result.add(stock);
+        }
+        return result;
     }
 }

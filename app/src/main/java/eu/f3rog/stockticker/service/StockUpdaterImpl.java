@@ -10,6 +10,7 @@ import eu.f3rog.stockticker.model.Stock;
 import eu.f3rog.stockticker.model.Symbol;
 import eu.f3rog.stockticker.service.api.ApiService;
 import rx.Observable;
+import rx.Subscription;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -30,16 +31,22 @@ public final class StockUpdaterImpl
     private final DataService mDataService;
     private final ApiService mApi;
     private final BehaviorSubject<List<Stock>> mStocks;
-    private Boolean mRunning = false;
+    private Subscription mDisposable;
 
     public StockUpdaterImpl(DataService dataService, ApiService api) {
         mDataService = dataService;
         mApi = api;
         mStocks = BehaviorSubject.create();
-        load();
     }
 
-    private void load() {
+    @Override
+    public Observable<List<Stock>> observeStocks() {
+        return mStocks;
+    }
+
+    @Override
+    public void start() {
+        // preload with empty data
         Observable.just(1)
                 .subscribeOn(Schedulers.io())
                 .map(new Func1<Integer, List<Stock>>() {
@@ -56,17 +63,17 @@ public final class StockUpdaterImpl
                     @Override
                     public void call(List<Stock> stocks) {
                         mStocks.onNext(stocks);
+                        // start loading real data
+                        startRequests();
                     }
                 });
+    }
 
-        Observable.interval(INTERVAL, TimeUnit.SECONDS)
+    private void startRequests() {
+        stop(); // make sure it's not already running
+
+        mDisposable = Observable.interval(0, INTERVAL, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
-                .filter(new Func1<Long, Boolean>() {
-                    @Override
-                    public Boolean call(Long aLong) {
-                        return mRunning;
-                    }
-                })
                 .map(new Func1<Long, List<Symbol>>() {
                     @Override
                     public List<Symbol> call(Long aLong) {
@@ -93,17 +100,10 @@ public final class StockUpdaterImpl
     }
 
     @Override
-    public Observable<List<Stock>> observeStocks() {
-        return mStocks;
-    }
-
-    @Override
-    public void start() {
-        mRunning = true;
-    }
-
-    @Override
     public void stop() {
-        mRunning = false;
+        if (mDisposable != null && !mDisposable.isUnsubscribed()) {
+            mDisposable.unsubscribe();
+            mDisposable = null;
+        }
     }
 }

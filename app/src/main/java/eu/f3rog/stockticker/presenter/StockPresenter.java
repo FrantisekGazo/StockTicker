@@ -13,6 +13,7 @@ import eu.f3rog.stockticker.model.Stock;
 import eu.f3rog.stockticker.service.StockUpdater;
 import eu.f3rog.stockticker.view.IStocksView;
 import rx.Observer;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
 /**
@@ -21,10 +22,13 @@ import rx.android.schedulers.AndroidSchedulers;
 public final class StockPresenter
         extends BasePresenter<IStocksView, String> {
 
+    private static final String TAG = StockPresenter.class.getCanonicalName();
+
     @Inject
     StockUpdater mStockUpdater;
 
     private List<Stock> mLatest = Collections.emptyList();
+    private Subscription mSubscription;
 
     @Override
     public void create(String data, boolean wasRestored) {
@@ -38,11 +42,15 @@ public final class StockPresenter
     @Override
     public void destroy() {
         super.destroy();
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+            mSubscription.unsubscribe();
+            mSubscription = null;
+        }
         mStockUpdater.stop();
     }
 
     private void loadStocks() {
-        mStockUpdater.observeStocks()
+        mSubscription = mStockUpdater.observeStocks()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<Stock>>() {
                     @Override
@@ -51,7 +59,7 @@ public final class StockPresenter
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("Error", "onError: " + e);
+                        Log.e(TAG, "onError: " + e);
                     }
 
                     @Override
